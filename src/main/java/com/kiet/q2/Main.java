@@ -1,26 +1,19 @@
 package com.kiet.q2;
-
-import java.sql.SQLException;
-import java.util.List;
-
+import java.sql.SQLException; import java.util.Arrays;
 public class Main {
-    public static void main(String[] args) {
-        StudentDAO dao = new StudentDAO();
-        StudentManager manager = new StudentManager(dao);
-
-        try {
-            System.out.println("Student Profile and Skill Development Management System");
-            System.out.println("-----------------------------------------------");
-            Student student = manager.findById(101);
-            if (student != null) {
-                System.out.println("Student found:");
-                System.out.println(student);
-            } else {
-                System.out.println("No student with ID 101 found. Add a student first.");
-            }
-        } catch (SQLException e) {
-            System.err.println("Database operation failed: " + e.getMessage());
-            System.err.println("Check MySQL is running, schema is created, and credentials in StudentDAO are correct.");
-        }
-    }
+ public static void main(String[] args){
+  StudentManager m=new StudentManager();
+  try{
+   // Uncomment ONCE to add this sample. Change ID/email for additional records.
+   // m.add(new Student(101,"Aarav Sharma","aarav@example.com","CSE",88,92,Arrays.asList("Java","SQL","Spring Boot")));
+   System.out.println("\\nALL STUDENTS");m.all().forEach(System.out::println);
+   System.out.println("\\nSEARCH BY ID");m.byId(101).forEach(System.out::println);
+   System.out.println("\\nSEARCH BY EMAIL");m.byEmail("aarav@example.com").forEach(System.out::println);
+   System.out.println("\\nSEARCH BY COURSE");m.byCourse("CSE").forEach(System.out::println);
+   System.out.println("\\nMERIT LIST");m.meritList().forEach(System.out::println);
+   System.out.println("\\nSTUDENTS GROUPED BY SAME SKILLS");m.sameSkills().forEach((k,v)->{if(v.size()>1)System.out.println(k+" => "+v);});
+   System.out.println("\\nPROGRAMMING < 50 AND MATHS >= 75");m.programmingImprovement().forEach(System.out::println);
+  }catch(SQLException e){System.out.println("Database error: "+e.getMessage());}
+   catch(IllegalArgumentException e){System.out.println("Validation error: "+e.getMessage());}
+ }
 }
