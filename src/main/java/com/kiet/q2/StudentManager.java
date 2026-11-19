@@ -1,51 +1,13 @@
 package com.kiet.q2;
-
-import java.sql.SQLException;
-import java.util.*;
-
+import java.sql.SQLException; import java.util.*; import java.util.stream.Collectors;
 public class StudentManager {
-    private final StudentDAO dao;
-
-    public StudentManager(StudentDAO dao) {
-        this.dao = dao;
-    }
-
-    public void addStudent(Student student) throws SQLException {
-        if (dao.findById(student.getStudentId()) != null) {
-            throw new IllegalArgumentException("Student ID already exists: " + student.getStudentId());
-        }
-        dao.addStudent(student);
-    }
-
-    public Student findById(int id) throws SQLException { return dao.findById(id); }
-
-    public String findByEmail(String email) throws SQLException {
-        // Search helper kept simple for the console demonstration.
-        return "Use the students table query to search email: " + email;
-    }
-
-    public List<Student> getMeritList(List<Student> students) {
-        List<Student> result = new ArrayList<>(students);
-        result.sort(Comparator.comparingDouble(Student::getAverage).reversed());
-        return result;
-    }
-
-    public Map<Set<String>, List<Student>> groupBySkillSet(List<Student> students) {
-        Map<Set<String>, List<Student>> groups = new LinkedHashMap<>();
-        for (Student student : students) {
-            Set<String> key = new TreeSet<>(student.getSkills());
-            groups.computeIfAbsent(key, k -> new ArrayList<>()).add(student);
-        }
-        return groups;
-    }
-
-    public List<Student> filterLowProgrammingHighMaths(List<Student> students) {
-        List<Student> result = new ArrayList<>();
-        for (Student student : students) {
-            if (student.getProgrammingScore() < 50 && student.getMathsScore() >= 75) {
-                result.add(student);
-            }
-        }
-        return result;
-    }
+ private final StudentDAO dao=new StudentDAO();
+ public void add(Student s)throws SQLException{for(Student x:dao.findAll())if(x.getStudentId()==s.getStudentId())throw new IllegalArgumentException("Duplicate student ID");dao.addStudent(s);}
+ public List<Student> all()throws SQLException{return dao.findAll();}
+ public List<Student> byId(int id)throws SQLException{return dao.findAll().stream().filter(s->s.getStudentId()==id).collect(Collectors.toList());}
+ public List<Student> byEmail(String email)throws SQLException{return dao.findAll().stream().filter(s->s.getEmail().equalsIgnoreCase(email)).collect(Collectors.toList());}
+ public List<Student> byCourse(String course)throws SQLException{return dao.findAll().stream().filter(s->s.getCourseName().equalsIgnoreCase(course)).collect(Collectors.toList());}
+ public List<Student> meritList()throws SQLException{return dao.findAll().stream().sorted(Comparator.comparingDouble(Student::average).reversed()).collect(Collectors.toList());}
+ public Map<Set<String>,List<Student>> sameSkills()throws SQLException{return dao.findAll().stream().collect(Collectors.groupingBy(s->new TreeSet<>(s.getTechnicalSkills())));}
+ public List<Student> programmingImprovement()throws SQLException{return dao.findAll().stream().filter(s->s.getProgrammingScore()<50&&s.getMathematicsScore()>=75).collect(Collectors.toList());}
 }
