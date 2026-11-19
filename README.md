@@ -1,30 +1,14 @@
-# Student Profile and Skill Development Management System
+Q2 Student Profile and Skill Development Management System
 
-A Java JDBC + MySQL console application for managing student profiles, academic scores, and technical skills.
+1. Open this folder in IntelliJ IDEA as a Maven project (pom.xml is at project root).
+2. Use JDK 17.
+3. Run database/schema.sql in MySQL to create the database and tables.
+4. In StudentDAO.java replace YOUR_MYSQL_PASSWORD with your MySQL root password.
+5. Run Main.java.
 
-## Tech stack
-- Java
-- JDBC
-- MySQL
-- Maven
+Q2 features: average, performance category, stronger subject, search by ID/email/course,
+merit list descending, grouping students with identical skill sets, programming below 50
+and maths >=75, duplicate ID prevention and score validation.
 
-## Setup
-1. Create the database and tables by running `database/schema.sql` in MySQL.
-2. Open this repository as a Maven project in IntelliJ IDEA.
-3. In `StudentDAO.java`, replace `YOUR_MYSQL_PASSWORD` with your local MySQL password.
-4. Reload Maven dependencies.
-5. Run `com.kiet.q2.Main`.
-
-## Features
-- Add and retrieve students
-- Store and manage student skills
-- Calculate averages and student categories
-- Compare programming and mathematics scores
-- Search by ID, email, or course
-- Generate merit lists and group students by skills
-- Validate score ranges and prevent duplicate student IDs
-
-## Database
-The SQL schema is in `database/schema.sql`.
-
-> This project is an academic demonstration. Do not commit real database credentials.
+To insert a sample student, uncomment the manager.add(...) line in Main.java and run once.
+The sample record is optional; no records are inserted automatically.
